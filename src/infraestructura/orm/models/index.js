@@ -4,29 +4,19 @@ const fs = require('fs');
 const path = require('path');
 const { Sequelize } = require('sequelize');
 
-
+const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const cfg = require(path.join(__dirname, '../../../../sequelize-config/config.js'))[env];
+const config = require(path.join(__dirname, '../../../../sequelize-config/config.js'))[env];
 
+const sequelize = new Sequelize(config.database, config.username, config.password, config);
 const db = {};
-const sequelize = new Sequelize(cfg.database, cfg.username, cfg.password, cfg);
 
-
-const db = require('./models');
-
-async function inicializarDB() {
-  await db.sequelize.authenticate();
-  console.log('Conexión con BD establecida (migraciones gobiernan el esquema).');
-  // No uses sync si trabajas con migraciones
-}
-
-module.exports = { inicializarDB, db };
 fs
   .readdirSync(__dirname)
   .filter((file) => {
     return (
       file.indexOf('.') !== 0 &&
-      file !== 'index.js' &&
+      file !== basename &&
       file.slice(-3) === '.js'
     );
   })
@@ -35,9 +25,9 @@ fs
     db[model.name] = model;
   });
 
-Object.keys(db).forEach((name) => {
-  if (db[name].associate) {
-    db[name].associate(db);
+Object.keys(db).forEach((modelName) => {
+  if (db[modelName].associate) {
+    db[modelName].associate(db);
   }
 });
 
