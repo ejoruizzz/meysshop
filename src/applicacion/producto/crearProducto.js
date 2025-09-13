@@ -1,10 +1,6 @@
-
 const { ProductoRepoSequelize } = require('../../infraestructura/repos/ProductoRepoSequelize');
-
 
 // Caso de uso: crear un nuevo producto
-const { ProductoRepoSequelize } = require('../../infraestructura/repos/ProductoRepoSequelize');
-
 /**
  * Crea un producto usando el repositorio de Sequelize
  * @param {Object} datos Información del producto
@@ -16,4 +12,4 @@ async function crearProducto(datos) {
   return repo.crear(datos);
 }
 
-module.exports = { crearProducto };
+module.exports = crearProducto;
