@@ -1,8 +1,4 @@
 
-module.exports = async function iniciarSesion(datos) {
-  return { token: 'fake-token', ...datos };
-};
-
 const bcrypt = require('bcryptjs');
 const db = require('../../infraestructura/orm/models');
 const { generarToken } = require('./auth');
@@ -21,4 +17,4 @@ async function iniciarSesion({ email, password }) {
   return { token };
 }
 
-module.exports = { iniciarSesion };
+module.exports = iniciarSesion;
