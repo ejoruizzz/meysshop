@@ -1,3 +1,7 @@
+
+const { ProductoRepoSequelize } = require('../../infraestructura/repos/ProductoRepoSequelize');
+
+
 // Caso de uso: obtener un producto por su ID
 const { ProductoRepoSequelize } = require('../../infraestructura/repos/ProductoRepoSequelize');
 
@@ -6,6 +10,7 @@ const { ProductoRepoSequelize } = require('../../infraestructura/repos/ProductoR
  * @param {number} id Identificador del producto
  * @returns {Promise<Object|null>} Producto encontrado o null
  */
+
 async function obtenerProducto(id) {
   const repo = new ProductoRepoSequelize();
   return repo.obtenerPorId(id);

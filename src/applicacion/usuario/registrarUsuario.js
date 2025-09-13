@@ -1,3 +1,8 @@
+
+module.exports = async function registrarUsuario(datos) {
+  return { id: 1, ...datos };
+};
+
 const bcrypt = require('bcryptjs');
 const db = require('../../infraestructura/orm/models');
 
@@ -15,3 +20,4 @@ async function registrarUsuario({ nombre, email, password, rol = 'cliente' }) {
 }
 
 module.exports = { registrarUsuario };
+
