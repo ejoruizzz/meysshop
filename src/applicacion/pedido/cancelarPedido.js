@@ -1,4 +1,5 @@
 const { pedidos, inventario } = require('./repositorioMemoria');
+const { ESTADO_PEDIDO } = require('../comun/Tipos');
 
 /**
  * Cancela un pedido existente y restaura el stock de inventario.
@@ -7,11 +8,11 @@ const { pedidos, inventario } = require('./repositorioMemoria');
  */
 function cancelarPedido(pedidoId) {
   const pedido = pedidos.find((p) => p.id === Number(pedidoId));
-  if (!pedido || pedido.estado === 'cancelado') {
+  if (!pedido || pedido.estado === ESTADO_PEDIDO.CANCELADO) {
     return null;
   }
 
-  pedido.estado = 'cancelado';
+  pedido.estado = ESTADO_PEDIDO.CANCELADO;
   for (const { productoId, cantidad } of pedido.items) {
     inventario[productoId] = (inventario[productoId] || 0) + cantidad;
   }

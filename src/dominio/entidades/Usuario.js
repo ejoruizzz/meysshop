@@ -1,14 +1,16 @@
+const { ErrorDeValidacion } = require('../../applicacion/comun/Excepciones');
+
 class Usuario {
   constructor({ id = null, nombre, email, hash, rolId = null, rol = null }) {
     if (!nombre) {
-      throw new Error('Nombre requerido');
+      throw new ErrorDeValidacion('Nombre requerido');
     }
     const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
     if (!email || !emailRegex.test(email)) {
-      throw new Error('Email inválido');
+      throw new ErrorDeValidacion('Email inválido');
     }
     if (!hash) {
-      throw new Error('Hash requerido');
+      throw new ErrorDeValidacion('Hash requerido');
     }
     this.id = id;
     this.nombre = nombre;

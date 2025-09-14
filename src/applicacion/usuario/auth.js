@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const { ErrorDeAplicacion } = require('../comun/Excepciones');
 
 const SECRET = process.env.JWT_SECRETO || 'secreto';
 
@@ -28,7 +29,7 @@ function generarToken(payload, expSegundos = 3600) {
 
 function verificarToken(token) {
   const [h, p, f] = token.split('.');
-  if (!h || !p || !f) throw new Error('Token inválido');
+  if (!h || !p || !f) throw new ErrorDeAplicacion('Token inválido', 401);
   const firma = crypto
     .createHmac('sha256', SECRET)
     .update(`${h}.${p}`)
@@ -36,10 +37,10 @@ function verificarToken(token) {
     .replace(/=/g, '')
     .replace(/\+/g, '-')
     .replace(/\//g, '_');
-  if (firma !== f) throw new Error('Firma no válida');
+  if (firma !== f) throw new ErrorDeAplicacion('Firma no válida', 401);
   const payload = JSON.parse(Buffer.from(p, 'base64').toString());
   if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
-    throw new Error('Token expirado');
+    throw new ErrorDeAplicacion('Token expirado', 401);
   }
   return payload;
 }

@@ -1,4 +1,5 @@
 const Pedido = require('../../dominio/entidades/Pedido');
+const { ESTADO_PEDIDO } = require('../../applicacion/comun/Tipos');
 
 let pedidos = [];
 let ultimoId = 0;
@@ -20,7 +21,7 @@ class PedidoRepoSequelize {
 
   async cancelar(id) {
     const pedido = await this.obtenerPorId(id);
-    if (!pedido || pedido.estado === 'cancelado') {
+    if (!pedido || pedido.estado === ESTADO_PEDIDO.CANCELADO) {
       return null;
     }
     pedido.cancelar();

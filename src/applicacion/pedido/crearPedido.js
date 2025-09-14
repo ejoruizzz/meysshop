@@ -1,4 +1,6 @@
 const { inventario, pedidos, generarId } = require('./repositorioMemoria');
+const { ESTADO_PEDIDO } = require('../comun/Tipos');
+const { ErrorDeValidacion } = require('../comun/Excepciones');
 
 /**
  * Crea un nuevo pedido para un usuario y descuenta el stock de los productos.
@@ -9,17 +11,17 @@ const { inventario, pedidos, generarId } = require('./repositorioMemoria');
  */
 function crearPedido({ usuarioId, items }) {
   if (!usuarioId) {
-    throw new Error('usuarioId es requerido');
+    throw new ErrorDeValidacion('usuarioId es requerido');
   }
   if (!Array.isArray(items) || items.length === 0) {
-    throw new Error('items es requerido');
+    throw new ErrorDeValidacion('items es requerido');
   }
 
   // Verificar stock disponible
   for (const { productoId, cantidad } of items) {
     const stock = inventario[productoId] || 0;
     if (cantidad > stock) {
-      throw new Error(`Stock insuficiente para el producto ${productoId}`);
+      throw new ErrorDeValidacion(`Stock insuficiente para el producto ${productoId}`);
     }
   }
 
@@ -32,7 +34,7 @@ function crearPedido({ usuarioId, items }) {
     id: generarId(),
     usuarioId,
     items: items.map((i) => ({ ...i })),
-    estado: 'creado',
+    estado: ESTADO_PEDIDO.CREADO,
     creadoEn: new Date(),
   };
 
@@ -41,4 +43,3 @@ function crearPedido({ usuarioId, items }) {
 }
 
 module.exports = crearPedido;
-

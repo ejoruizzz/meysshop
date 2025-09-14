@@ -1,12 +1,13 @@
-
 const bcrypt = require('bcryptjs');
 const db = require('../../infraestructura/orm/models');
+const { ROLES_USUARIO } = require('../comun/Tipos');
+const { ErrorDeAplicacion } = require('../comun/Excepciones');
 
-async function registrarUsuario({ nombre, email, password, rol = 'cliente' }) {
+async function registrarUsuario({ nombre, email, password, rol = ROLES_USUARIO.CLIENTE }) {
   const { Usuario, Rol } = db;
   const existente = await Usuario.findOne({ where: { email } });
   if (existente) {
-    throw new Error('Email ya registrado');
+    throw new ErrorDeAplicacion('Email ya registrado', 409);
   }
   const rolInst = await Rol.findOne({ where: { nombre: rol } });
   const rolId = rolInst ? rolInst.id : null;
@@ -16,4 +17,3 @@ async function registrarUsuario({ nombre, email, password, rol = 'cliente' }) {
 }
 
 module.exports = registrarUsuario;
-
