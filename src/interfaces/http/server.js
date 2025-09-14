@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const manejarErrores = require('./middlewares/manejarErrores');
 const productoRuta = require('./rutas/producto.ruta');
 const authRuta = require('./rutas/auth.ruta');
 const pedidoRuta = require('./rutas/pedido.ruta');
@@ -17,10 +18,7 @@ function crearServidor() {
   app.use('/api/auth', authRuta);
   app.use('/api/pedidos', pedidoRuta);
 
-  app.use((err, req, res, next) => {
-    console.error(err);
-    res.status(500).json({ mensaje: 'Error interno del servidor' });
-  });
+  app.use(manejarErrores);
 
   return app;
 }
