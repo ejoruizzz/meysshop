@@ -1,10 +1,12 @@
+const { ErrorDeValidacion } = require('../../applicacion/comun/Excepciones');
+
 class Producto {
   constructor({ id = null, nombre, descripcion = null, precio, activo = true, categoriaId = null, categoria = null, inventario = null }) {
     if (!nombre) {
-      throw new Error('Nombre requerido');
+      throw new ErrorDeValidacion('Nombre requerido');
     }
     if (typeof precio !== 'number' || precio <= 0) {
-      throw new Error('Precio debe ser positivo');
+      throw new ErrorDeValidacion('Precio debe ser positivo');
     }
     this.id = id;
     this.nombre = nombre;

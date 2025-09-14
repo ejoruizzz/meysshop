@@ -1,14 +1,17 @@
+const { ESTADO_PEDIDO } = require('../../applicacion/comun/Tipos');
+const { ErrorDeValidacion } = require('../../applicacion/comun/Excepciones');
+
 class Pedido {
-  constructor({ id = null, usuarioId, items, estado = 'creado', creadoEn = new Date() }) {
+  constructor({ id = null, usuarioId, items, estado = ESTADO_PEDIDO.CREADO, creadoEn = new Date() }) {
     if (!usuarioId) {
-      throw new Error('usuarioId requerido');
+      throw new ErrorDeValidacion('usuarioId requerido');
     }
     if (!Array.isArray(items) || items.length === 0) {
-      throw new Error('items es requerido');
+      throw new ErrorDeValidacion('items es requerido');
     }
     for (const item of items) {
       if (!item.productoId || typeof item.cantidad !== 'number' || item.cantidad <= 0) {
-        throw new Error('Item de pedido inválido');
+        throw new ErrorDeValidacion('Item de pedido inválido');
       }
     }
     this.id = id;
@@ -19,8 +22,8 @@ class Pedido {
   }
 
   cancelar() {
-    if (this.estado !== 'cancelado') {
-      this.estado = 'cancelado';
+    if (this.estado !== ESTADO_PEDIDO.CANCELADO) {
+      this.estado = ESTADO_PEDIDO.CANCELADO;
     }
   }
 
