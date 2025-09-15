@@ -1,10 +1,12 @@
 const crearPedido = require('../../../applicacion/pedido/crearPedido');
 const historialPedidos = require('../../../applicacion/pedido/historialPedidos');
 const cancelarPedido = require('../../../applicacion/pedido/cancelarPedido');
+const { pedidoSchema } = require('../validadores/pedido.val');
 
 async function realizarPedido(req, res, next) {
   try {
-    const pedido = crearPedido(req.body);
+    const datos = pedidoSchema.parse(req.body);
+    const pedido = crearPedido(datos);
     res.status(201).json(pedido);
   } catch (err) {
     next(err);
