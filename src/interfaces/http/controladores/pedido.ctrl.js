@@ -5,8 +5,12 @@ const { pedidoSchema } = require('../validadores/pedido.val');
 
 async function realizarPedido(req, res, next) {
   try {
+
+    const pedido = await crearPedido(req.body);
+
     const datos = pedidoSchema.parse(req.body);
     const pedido = crearPedido(datos);
+
     res.status(201).json(pedido);
   } catch (err) {
     next(err);
@@ -16,7 +20,7 @@ async function realizarPedido(req, res, next) {
 async function obtenerHistorial(req, res, next) {
   try {
     const usuarioId = Number(req.params.usuarioId || req.query.usuarioId);
-    const pedidos = historialPedidos(usuarioId);
+    const pedidos = await historialPedidos(usuarioId);
     res.json(pedidos);
   } catch (err) {
     next(err);
@@ -25,7 +29,7 @@ async function obtenerHistorial(req, res, next) {
 
 async function cancelar(req, res, next) {
   try {
-    const pedido = cancelarPedido(req.params.id);
+    const pedido = await cancelarPedido(req.params.id);
     if (!pedido) {
       return res.status(404).json({ error: 'Pedido no encontrado' });
     }
