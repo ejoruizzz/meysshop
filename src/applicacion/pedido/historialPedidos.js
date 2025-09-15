@@ -1,12 +1,13 @@
-const { pedidos } = require('./repositorioMemoria');
+const { PedidoRepoSequelize } = require('../../infraestructura/repos/PedidoRepoSequelize');
 
 /**
  * Devuelve el historial de pedidos de un usuario.
  * @param {number} usuarioId - Identificador del usuario.
- * @returns {Array<Object>} Lista de pedidos del usuario.
+ * @returns {Promise<Array<Object>>} Lista de pedidos del usuario.
  */
-function historialPedidos(usuarioId) {
-  return pedidos.filter((p) => p.usuarioId === usuarioId);
+async function historialPedidos(usuarioId) {
+  const repo = new PedidoRepoSequelize();
+  return repo.listarPorUsuario(usuarioId);
 }
 
 module.exports = historialPedidos;
